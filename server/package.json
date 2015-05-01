@@ -1,0 +1,9 @@
+{
+  "name": "BitfighterViewer",
+  "version": "0.0.1",
+  "description": "The http server that serves the client and gives it data.",
+  "dependencies": {
+    "express": "^4.7.2",
+    "socket.io": "^1.0.6"
+  }
+}

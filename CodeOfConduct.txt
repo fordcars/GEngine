@@ -1,0 +1,11 @@
+-Use === instead of == in most cases
+-One class per file
+-Captilize class names
+-Prefix private members in classes with m
+-Use getters/setters for members in classes. But don't, please program object oriented :)
+-Use 'this' for getting a reference to your class in it's methods
+-Try to always have a return value for methods
+-Have fun!
+
+Philosophy:
+A simple 2d game engine, encouraging object-oriented programming and giving developers many freedoms/not being limited by a framework

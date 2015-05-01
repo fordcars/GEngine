@@ -1,0 +1,28 @@
+Collisions
+Define resources in text file
+Work on input events, Use events, don't get out of them! (more responsive, right?)
+Access to mouse drag
+Detect button presses (down and up, like a click)
+Audio (Audio API, probably)
+Better buttons. The ability to give it a variable where it would keep the button's state (for the buttons that have one)
+Time-based animations and movement, not frame-base!
+Long-shot: Optimize context style transformations with a system. (complex)
+NOTE: Stop ignoring jQuery, and get that corss-browser goodness!
+Only us mousedown and mouseup? Way more responsive!
+No direct access to members?
+Don't redraw when there is no movement
+Implement Box2d - with slow motion
+
+Test: Shooter with ragdolls?
+
+Checklist:
+Sprite physics: keep points in definition. Fine with complex things like cars, it's going to use box2d handle.
+Piece of paper!
+
+Do the update TODO!!!!!
+Camera controls and locking on sprite
+Resource loading
+Input
+Input Validation (+error messages, throw new Error("Error message");)
+
+BONUS:Universal level editor (with game engine!)
