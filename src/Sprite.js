@@ -1,22 +1,31 @@
 // GEngine
-// Copyright © 2015 Carl Hewett
-
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+//The MIT License (MIT)
+//
+//Copyright (c) 2015 Carl Hewett
+//
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+//
+//The above copyright notice and this permission notice shall be included in
+//all copies or substantial portions of the Software.
+//
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//THE SOFTWARE.
 
 // Types: basic, physics
+// Physics types: polygon, circle
 
-define(["Point"], function(Point)
+define(["Point", "Box2DW"], function(Point, Box2D)
 {
 var exports = {};
 
@@ -35,18 +44,64 @@ exports.Sprite = function(scene, constructor, x, y, renderOrder, type, typeArgs)
 	
 	var mPhysics = false; // Only defined if it is of physics type
 	
-	if(mType==="physics" && mScene.getType()!=="physics")
+	typeArgs = typeof typeArgs !== "undefined" ? typeArgs : {};
+	
+	if(mType==="physics" && mScene.getType()==="physics")
 	{
-		if(typeof typeArgs !== "undefined")
+		var world = mScene.getWorld();
+		var fixture = new Box2D.b2FixtureDef();
+		var shape;
+		
+		// Defaults
+		var density = typeof typeArgs.density !== "undefined" ? typeArgs.density : 1.0;
+		var friction = typeof typeArgs.density !== "undefined" ? typeArgs.density : 0.2;
+		var restitution = typeof typeArgs.density !== "undefined" ? typeArgs.density : 0.1;
+		var shapeType = typeof typeArgs.shapeType !== "undefined" ? typeArgs.shapeType : "polygon";
+		var physicsType = typeof typeArgs.physicsType !== "undefined" ? typeArgs.physicsType : Box2D.b2Body.b2_dynamicBody; 
+		
+		var mass = typeof typeArgs.mass !== "undefined" ? typeArgs.mass : 2.0;
+		var pos = typeof typeArgs.pos !== "undefined" ? typeArgs.pos : new Box2D.b2Vec2(0, 0);
+		
+		switch(shapeType)
 		{
-			// Defaults
-			var physicsType = typeof typeArgs.physicsType !== "undefined" ? typeArgs.physicsType : new Box2D.b2Vec2(0, -10);
-			mWorld = new Box2D.b2World(gravity, sleep);
+			case "polygon":
+				var vertices = typeArgs.vertice
+				shape = new Box2D.b2PolygonShape();
+				
+				if(typeof vertices==="undefined")
+				{
+					shape.SetAsBox(10, 10);
+				} else
+				{
+					shape.vertices = vertices;
+					shape.vertexCount = vertices.length; // Needed?
+				}
+				break;
+			
+			case "circle":
+				shape = new Box2D.b2CircleShape();
+				shape.SetRadius(typeof typeArgs.radius !== "undefined" ? typeArgs.radius : 15);
+				break;
 		}
+		
+		fixture.shape = shape;
+		fixture.density = density;
+		fixture.friction = friction;
+		fixture.restitution = restitution;
+		
+		var bodyDef = new Box2D.b2BodyDef();
+		bodyDef.position.SetV(pos);
+		
+		mPhysics = world.CreateBody(bodyDef).CreateFixture(fixture);; // Returns body
 	} else
 	{
 		mType = "basic"; // If physics is not available
 	}
+	
+	sprite.getPhysics = function()
+	{
+		return mPhysics;
+	};
 	
 	sprite.delete = function()
 	{

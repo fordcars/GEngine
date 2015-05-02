@@ -1,18 +1,26 @@
 // GEngine
-// Copyright © 2015 Carl Hewett
-
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+//The MIT License (MIT)
+//
+//Copyright (c) 2015 Carl Hewett
+//
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+//
+//The above copyright notice and this permission notice shall be included in
+//all copies or substantial portions of the Software.
+//
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//THE SOFTWARE.
 
 // Types: basic, physics
 
@@ -32,15 +40,15 @@ exports.Scene = function(spriteConstructorManager, name, type, typeArgs) // Feel
 	// Physics
 	var mWorld = false; // Only defined if the scene is a physics type
 	
+	typeArgs = typeof typeArgs !== "undefined" ? typeArgs : {};
+	
 	if(mType=="physics")
 	{
-		if(typeof typeArgs !== "undefined")
-		{
-			// Defaults
-			var gravity = typeof typeArgs.gravity !== "undefined" ? typeArgs.gravity : new Box2D.b2Vec2(0, -10);
-			var sleep = typeof typeArgs.sleep !== "undefined" ? typeArgs.sleep : true;
-			mWorld = new Box2D.b2World(gravity, sleep);
-		}
+		// Defaults
+		var gravity = typeof typeArgs.gravity !== "undefined" ? typeArgs.gravity : new Box2D.b2Vec2(0, -10);
+		var sleep = typeof typeArgs.sleep !== "undefined" ? typeArgs.sleep : true;
+		
+		mWorld = new Box2D.b2World(gravity, sleep);
 	}
 	
 	scene.delete = function()
@@ -61,6 +69,11 @@ exports.Scene = function(spriteConstructorManager, name, type, typeArgs) // Feel
 	scene.getType = function()
 	{
 		return mType
+	};
+	
+	scene.getWorld = function()
+	{
+		return mWorld;
 	};
 	
 	// Creates new sprite using a constructor, or a constructor name.

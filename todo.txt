@@ -16,13 +16,15 @@ Implement Box2d - with slow motion
 Test: Shooter with ragdolls?
 
 Checklist:
-Sprite physics: keep points in definition. Fine with complex things like cars, it's going to use box2d handle.
+Make sure fixtures and all work (like SetRadius)
 Piece of paper!
 
+DO something with sprite coords
 Do the update TODO!!!!!
 Camera controls and locking on sprite
-Resource loading
 Input
 Input Validation (+error messages, throw new Error("Error message");)
+TEST GAME
+Resource loading
 
 BONUS:Universal level editor (with game engine!)
