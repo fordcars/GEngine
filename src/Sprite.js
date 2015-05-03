@@ -46,57 +46,60 @@ exports.Sprite = function(scene, constructor, x, y, renderOrder, type, typeArgs)
 	
 	typeArgs = typeof typeArgs !== "undefined" ? typeArgs : {};
 	
-	if(mType==="physics" && mScene.getType()==="physics")
+	(function setupSprite() // First parenthesis vital for calling it directly
 	{
-		var world = mScene.getWorld();
-		var fixture = new Box2D.b2FixtureDef();
-		var shape;
-		
-		// Defaults
-		var density = typeof typeArgs.density !== "undefined" ? typeArgs.density : 1.0;
-		var friction = typeof typeArgs.density !== "undefined" ? typeArgs.density : 0.2;
-		var restitution = typeof typeArgs.density !== "undefined" ? typeArgs.density : 0.1;
-		var shapeType = typeof typeArgs.shapeType !== "undefined" ? typeArgs.shapeType : "polygon";
-		var physicsType = typeof typeArgs.physicsType !== "undefined" ? typeArgs.physicsType : Box2D.b2Body.b2_dynamicBody; 
-		
-		var mass = typeof typeArgs.mass !== "undefined" ? typeArgs.mass : 2.0;
-		var pos = typeof typeArgs.pos !== "undefined" ? typeArgs.pos : new Box2D.b2Vec2(0, 0);
-		
-		switch(shapeType)
+		if(mType==="physics" && mScene.getType()==="physics")
 		{
-			case "polygon":
-				var vertices = typeArgs.vertice
-				shape = new Box2D.b2PolygonShape();
-				
-				if(typeof vertices==="undefined")
-				{
-					shape.SetAsBox(10, 10);
-				} else
-				{
-					shape.vertices = vertices;
-					shape.vertexCount = vertices.length; // Needed?
-				}
-				break;
+			var world = mScene.getWorld();
+			var fixture = new Box2D.b2FixtureDef();
+			var shape;
 			
-			case "circle":
-				shape = new Box2D.b2CircleShape();
-				shape.SetRadius(typeof typeArgs.radius !== "undefined" ? typeArgs.radius : 15);
-				break;
+			// Defaults
+			var density = typeof typeArgs.density !== "undefined" ? typeArgs.density : 1.0;
+			var friction = typeof typeArgs.density !== "undefined" ? typeArgs.density : 0.2;
+			var restitution = typeof typeArgs.density !== "undefined" ? typeArgs.density : 0.1;
+			var shapeType = typeof typeArgs.shapeType !== "undefined" ? typeArgs.shapeType : "polygon";
+			var physicsType = typeof typeArgs.physicsType !== "undefined" ? typeArgs.physicsType : Box2D.b2Body.b2_dynamicBody; 
+			
+			var mass = typeof typeArgs.mass !== "undefined" ? typeArgs.mass : 2.0;
+			var pos = typeof typeArgs.pos !== "undefined" ? typeArgs.pos : new Box2D.b2Vec2(0, 0);
+			
+			switch(shapeType)
+			{
+				case "polygon":
+					var vertices = typeArgs.vertice
+					shape = new Box2D.b2PolygonShape();
+					
+					if(typeof vertices==="undefined")
+					{
+						shape.SetAsBox(10, 10);
+					} else
+					{
+						shape.vertices = vertices;
+						shape.vertexCount = vertices.length; // Needed?
+					}
+					break;
+				
+				case "circle":
+					shape = new Box2D.b2CircleShape();
+					shape.SetRadius(typeof typeArgs.radius !== "undefined" ? typeArgs.radius : 15);
+					break;
+			}
+			
+			fixture.shape = shape;
+			fixture.density = density;
+			fixture.friction = friction;
+			fixture.restitution = restitution;
+			
+			var bodyDef = new Box2D.b2BodyDef();
+			bodyDef.position.SetV(pos);
+			
+			mPhysics = world.CreateBody(bodyDef).CreateFixture(fixture); // Returns body
+		} else
+		{
+			mType = "basic"; // If physics is not available
 		}
-		
-		fixture.shape = shape;
-		fixture.density = density;
-		fixture.friction = friction;
-		fixture.restitution = restitution;
-		
-		var bodyDef = new Box2D.b2BodyDef();
-		bodyDef.position.SetV(pos);
-		
-		mPhysics = world.CreateBody(bodyDef).CreateFixture(fixture);; // Returns body
-	} else
-	{
-		mType = "basic"; // If physics is not available
-	}
+	})();
 	
 	sprite.getPhysics = function()
 	{

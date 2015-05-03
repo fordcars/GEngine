@@ -28,7 +28,7 @@ define(["Sprite", "Box2DW"], function(Sprite, Box2D) // Locals having the same n
 {
 var exports = {};
 
-exports.Scene = function(spriteConstructorManager, name, type, typeArgs) // Feel free to change these (except spriteConstructorManager)
+exports.Scene = function(spriteConstructorManager, name, type, typeArgs, data) // Feel free to change these (except spriteConstructorManager)
 {
 	var scene = {};
 	
@@ -36,6 +36,7 @@ exports.Scene = function(spriteConstructorManager, name, type, typeArgs) // Feel
 	var mSprites = []; // 2d. Its index represents the render order. Make sure to check for undefined in the first array because of padding!
 	var mSpriteConstructorManager = spriteConstructorManager;
 	var mType = typeof type !== "undefined" ? type : "basic";
+	var mData = data;
 	
 	// Physics
 	var mWorld = false; // Only defined if the scene is a physics type
@@ -68,7 +69,12 @@ exports.Scene = function(spriteConstructorManager, name, type, typeArgs) // Feel
 	
 	scene.getType = function()
 	{
-		return mType
+		return mType;
+	};
+	
+	scene.getData = function()
+	{
+		return mData;
 	};
 	
 	scene.getWorld = function()

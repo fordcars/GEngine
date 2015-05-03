@@ -29,7 +29,7 @@ function main()
 	// Remember, this is used to include files.
 	require(["GEngine", "HelperFunctions"], function(GEngine, HF)
 	{
-		var game = new GEngine.Game({name: "Demo", version: "0.1", layers: ["bgIsCool", "fgIsCoolToo"], update: update, contextType: "2d"});
+		var game = new GEngine.Game({name: "Demo", version: "0.1", layers: ["bgIsCool", "fgIsCoolToo"], stepGame: stepGame, contextType: "2d"});
 		
 		var constructor = game.getSpriteConstructorManager().createConstructor({name: "Hi",
 		init: function(sprite)
@@ -53,7 +53,7 @@ function main()
 		
 		game.getSceneManager().createScene("CoolMain", "physics", {gravity: 9.8});
 		game.getSceneManager().changeScene("CoolMain");
-		game.getSceneManager().getScene().createSprite("Hi", 100, 100, 0, "physics");
+		game.getSceneManager().getScene().createSprite("Hi", 100, 100, 0, "physics", {shapeType: "circle"});
 		game.getSceneManager().getScene().createSprite("BOO!", 100, 100, 10, "physics");
 		game.getSceneManager().getScene().createSprite("BOO!", 100, 100, 5, "physics");
 		console.log(game.getSceneManager().getScene().getSprites()[0][0].getPhysics())
@@ -63,7 +63,7 @@ function main()
 		console.log("Scene:");
 		console.log(game.getSceneManager().getScene());
 		
-		function update()
+		function stepGame()
 		{
 			
 		}

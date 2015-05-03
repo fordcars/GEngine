@@ -43,7 +43,7 @@ exports.Game = function(parameters)
 		var height = typeof parameters.height !== "undefined" ? parameters.height : 600;
 		var parent = typeof parameters.parent !== "undefined" ? parameters.parent : document.body;
 		var contextType = typeof parameters.contextType !== "undefined" ? parameters.contextType : "2d";
-		var updateCallback = typeof parameters.update !== "undefined" ? parameters.update : false;
+		var updateCallback = typeof parameters.stepGame !== "undefined" ? parameters.stepGame : false;
 		
 		var mName = parameters.name;
 		var mVersion = parameters.version;
@@ -82,14 +82,11 @@ exports.Game = function(parameters)
 		{
 			var scene = mSceneManager.getScene();
 			
-			if(updateCallback!=false)
+			if(scene!=false && updateCallback!=false)
 			{
-				parameters.update();
-			}
-			
-			if(scene!=false)
-			{
-				// TODO: GIVE THIS (loop) TO THE DEVELOPER IN UPDATE + ability to give arguments to update() and init()!!!!!!!!!!!!!!!!!!!-- mGraphics.renderSprites(scene.getSprites());
+				parameters.stepGame(scene);
+				
+				// TODO: GIVE THIS (loop) TO THE DEVELOPER IN UPDATE + ability to give arguments to update()-- mGraphics.renderSprites(scene.getSprites());
 			}
 			
 			window.requestAnimationFrame(game.update);

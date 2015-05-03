@@ -16,7 +16,7 @@ Implement Box2d - with slow motion
 Test: Shooter with ragdolls?
 
 Checklist:
-Make sure fixtures and all work (like SetRadius)
+PIXI.JS -- probably not since it keeps track of sprites
 Piece of paper!
 
 DO something with sprite coords
