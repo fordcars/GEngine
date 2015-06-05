@@ -41,6 +41,9 @@ exports.Scene = function(spriteConstructorManager, name, type, typeArgs, data) /
 	// Physics
 	var mWorld = false; // Only defined if the scene is a physics type
 	
+	// Interface
+	var mSpriteIndex = [0, 0]; // For getSprite(); The first number represents the render order, and the second, the index of that order
+	
 	typeArgs = typeof typeArgs !== "undefined" ? typeArgs : {};
 	
 	if(mType=="physics")
@@ -80,6 +83,43 @@ exports.Scene = function(spriteConstructorManager, name, type, typeArgs, data) /
 	scene.getWorld = function()
 	{
 		return mWorld;
+	};
+	
+	scene.resetSpriteIndex = function()
+	{
+		mSpriteIndex = [0, 0];
+	};
+	
+	scene.getSprite = function() // Gets the current sprite, call this in a loop, returns false when the loop is over (array[array.length])
+	{
+		var renderOrderSprites;
+		var sprite;
+		
+		for(length=mSprites.length; mSpriteIndex[0]<length; mSpriteIndex[0]++)
+		{
+			renderOrderSprites = mSprites[mSpriteIndex[0]];
+			
+			if(typeof renderOrderSprites!=="undefined") // Check if it is NOT padding!!
+			{
+				for(jLength=renderOrderSprites.length; mSpriteIndex[1]<jLength; mSpriteIndex[1]++)
+				{
+					sprite = renderOrderSprites[mSpriteIndex[1]];
+					
+					if(mSpriteIndex[1]<renderOrderSprites.length-1)
+					{
+						mSpriteIndex[1]++;
+					} else
+					{
+						mSpriteIndex[1] = 0;
+						mSpriteIndex[0]++;
+					}
+					
+					return sprite;
+				}
+			}
+		}
+		
+		return false;
 	};
 	
 	// Creates new sprite using a constructor, or a constructor name.

@@ -52,5 +52,5 @@
 }());
 
 require.config({
-
+	paths: {Box2D: "lib/box2d.min"}
 });

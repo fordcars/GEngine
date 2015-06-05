@@ -26,15 +26,48 @@ define(function()
 {
 var exports = {};
 
-exports.Layer = function(canvas, name, contextType)
+exports.Layer = function(canvas, name)
 {
-	contextType = typeof contextType !== "undefined" ? contextType :"2d";
 	var layer = canvas.getContext("2d");
 	var mName = name;
 	
 	layer.getName = function()
 	{
 		return mName;
+	};
+	
+	layer.clear = function()
+	{
+		var canvasCorner = layer.transformPoint(0, 0);console.log(canvasCorner); // ONLY DEBUG PLACE ---- THIS RETURNS UNDEFINED WHYSSS
+		var canvasCorner2 = layer.transformPoint(canvas.width, canvas.height);
+		var width = canvasCorner2.x - canvasCorner.x;
+		var height = canvasCorner2.y - canvasCorner.y;
+		
+		layer.clearRect(canvasCorner.x, canvasCorner.y, width, height);
+	};
+	
+	layer.fill = function()
+	{
+		var canvasCorner = layer.transformPoint(0, 0);
+		var canvasCorner2 = layer.transformPoint(canvas.width, canvas.height);
+		var width = canvasCorner2.x - canvasCorner.x;
+		var height = canvasCorner2.y - canvasCorner.y;
+		
+		layer.fillRect(canvasCorner.x, canvasCorner.y, width, height);
+	};
+	
+	layer.drawCircle = function(x, y, radius, filled)
+	{
+		this.beginPath();
+		this.arc(x, y, radius, 0, Math.TAU, true);
+		
+		if(filled)
+		{
+			this.fill();
+		} else
+		{
+			this.stroke();
+		}
 	};
 	
 	return layer;

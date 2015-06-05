@@ -27,7 +27,7 @@ window.onload = main;
 function main()
 {
 	// Remember, this is used to include files.
-	require(["GEngine", "HelperFunctions"], function(GEngine, HF)
+	require(["GEngine", "HelperFunctions", "Point"], function(GEngine, HF, Point)
 	{
 		var game = new GEngine.Game({name: "Demo", version: "0.1", layers: ["bgIsCool", "fgIsCoolToo"], stepGame: stepGame, contextType: "2d"});
 		
@@ -36,9 +36,9 @@ function main()
 		{
 			//console.log("Initializing " + sprite.getName());
 		},
-		renderer: function()
+		renderer: function(sprite, info, args)
 		{
-			console.log("Rendering hi!");
+			
 		}});
 		
 		var constructor = game.getSpriteConstructorManager().createConstructor({name: "BOO!",
@@ -46,16 +46,16 @@ function main()
 		{
 			//console.log("Initializing " + sprite.getName());
 		},
-		renderer: function()
+		renderer: function(sprite, info, args)
 		{
-			console.log("Rendering boo!!");
+			
 		}});
 		
 		game.getSceneManager().createScene("CoolMain", "physics", {gravity: 9.8});
 		game.getSceneManager().changeScene("CoolMain");
-		game.getSceneManager().getScene().createSprite("Hi", 100, 100, 0, "physics", {shapeType: "circle"});
-		game.getSceneManager().getScene().createSprite("BOO!", 100, 100, 10, "physics");
-		game.getSceneManager().getScene().createSprite("BOO!", 100, 100, 5, "physics");
+		game.getSceneManager().getScene().createSprite("Hi", 15, new Point.Point(100, 100), 0, 0, "physics");
+		game.getSceneManager().getScene().createSprite("BOO!", 20, new Point.Point(100, 100), 0, 10, "physics");
+		game.getSceneManager().getScene().createSprite("BOO!", 5, new Point.Point(100, 100), 0, 5, "physics");
 		console.log(game.getSceneManager().getScene().getSprites()[0][0].getPhysics())
 		
 		console.log("Sprites:");
@@ -63,9 +63,25 @@ function main()
 		console.log("Scene:");
 		console.log(game.getSceneManager().getScene());
 		
-		function stepGame()
+		function stepGame(scene, graphics)
 		{
+			var layer = graphics.getLayer();
 			
+			layer.clear();
+			
+			var sprite;
+			
+			for(var i=0; i<100; i++)
+			{
+				sprite = scene.getSprite();
+				
+				if(sprite==false)
+				{
+					break;
+				}
+				
+				sprite.render("Hi");
+			}
 		}
 	});
 }

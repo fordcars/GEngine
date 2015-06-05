@@ -16,8 +16,10 @@ Implement Box2d - with slow motion
 Test: Shooter with ragdolls?
 
 Checklist:
-PIXI.JS -- probably not since it keeps track of sprites
-Piece of paper!
+Layer.js oy
+Piece of paper!: Coords for input
+
+Box2d messing up when loading at first. Order?
 
 DO something with sprite coords
 Do the update TODO!!!!!

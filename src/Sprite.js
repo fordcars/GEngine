@@ -29,12 +29,16 @@ define(["Point", "Box2DW"], function(Point, Box2D)
 {
 var exports = {};
 
-exports.Sprite = function(scene, constructor, x, y, renderOrder, type, typeArgs) // Free to edit these and changing copy() accordingly (except scene and constructor of course)
+// renderOrder+ are optional
+exports.Sprite = function(scene, constructor, vertices, position, angle, renderOrder, type, typeArgs) // Free to edit these and changing copy() accordingly (except scene and constructor of course)
 {
 	var sprite = {};
 	
 	var mName = constructor.getName();
-	var mCoords = new Point.Point(x, y);
+	var mVerticesOrRadius = vertices; // Holds vertices, or if it is a circle, the radius
+	var mShape = mVerticesOrRadius.length==undefined ? "circle" : "polygon"; // If it is a radius, set is as a circle
+	var mPosition = position;
+	var mAngle = angle;
 	var mScene = scene;
 	var mRenderOrder = typeof renderOrder !== "undefined" ? renderOrder : 0;
 	var mType = typeof type !== "undefined" ? type : "basic";
@@ -58,16 +62,14 @@ exports.Sprite = function(scene, constructor, x, y, renderOrder, type, typeArgs)
 			var density = typeof typeArgs.density !== "undefined" ? typeArgs.density : 1.0;
 			var friction = typeof typeArgs.density !== "undefined" ? typeArgs.density : 0.2;
 			var restitution = typeof typeArgs.density !== "undefined" ? typeArgs.density : 0.1;
-			var shapeType = typeof typeArgs.shapeType !== "undefined" ? typeArgs.shapeType : "polygon";
 			var physicsType = typeof typeArgs.physicsType !== "undefined" ? typeArgs.physicsType : Box2D.b2Body.b2_dynamicBody; 
 			
 			var mass = typeof typeArgs.mass !== "undefined" ? typeArgs.mass : 2.0;
-			var pos = typeof typeArgs.pos !== "undefined" ? typeArgs.pos : new Box2D.b2Vec2(0, 0);
 			
-			switch(shapeType)
+			switch(mShape)
 			{
 				case "polygon":
-					var vertices = typeArgs.vertice
+					var vertices = mVerticesOrRadius;
 					shape = new Box2D.b2PolygonShape();
 					
 					if(typeof vertices==="undefined")
@@ -92,12 +94,13 @@ exports.Sprite = function(scene, constructor, x, y, renderOrder, type, typeArgs)
 			fixture.restitution = restitution;
 			
 			var bodyDef = new Box2D.b2BodyDef();
-			bodyDef.position.SetV(pos);
+			bodyDef.position.SetV(mPosition);
+			bodyDef.angle = mAngle;
 			
 			mPhysics = world.CreateBody(bodyDef).CreateFixture(fixture); // Returns body
 		} else
 		{
-			mType = "basic"; // If physics is not available
+			mType = "basic"; // If physics is not on or available
 		}
 	})();
 	
@@ -111,15 +114,18 @@ exports.Sprite = function(scene, constructor, x, y, renderOrder, type, typeArgs)
 		mScene.deleteSprite(this);
 	};
 	
-	sprite.render = function()
+	sprite.render = function(args)
 	{
-		mRenderer(mData);
+		var info = {};
+		info.verticesOrRadius = mVerticesOrRadius;
+		
+		mRenderer(this, info, args);
 	};
 	
 	sprite.copy = function(spriteScene)
 	{
 		spriteScene = typeof spriteScene !== "undefined" ? spriteScene : mScene;
-		return new Sprite(spriteScene, constructor, mCoords.x, mCoords.y, mType, mRenderOrder);
+		return new Sprite(spriteScene, constructor, mPosition.x, mPosition.y, mType, mRenderOrder);
 	};
 	
 	sprite.getName = function()
@@ -127,9 +133,31 @@ exports.Sprite = function(scene, constructor, x, y, renderOrder, type, typeArgs)
 		return mName;
 	};
 	
-	sprite.getCoords = function()
+	sprite.setVerticesOrRadius = function(values)
 	{
-		return mCoords;
+		mVerticesOrRadius = values;
+	};
+	
+	sprite.getCoords = function() // For physics and basic sprites
+	{
+		if(mType=="physics")
+		{
+			return mPhysics.GetXForm().position;
+		} else
+		{
+			return mPosition;
+		}
+	};
+	
+	sprite.getAngle = function()
+	{
+		if(mType=="physics")
+		{
+			return mPhysics.GetAngle();
+		} else
+		{
+			return mAngle;
+		}
 	};
 	
 	sprite.getRenderOrder = function()

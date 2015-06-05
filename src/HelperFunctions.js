@@ -36,10 +36,5 @@ exports.randomFloat = function(min,max) // Inclusive
 	return parseFloat((Math.random() * (max - min) + min).toFixed(4)); // http://stackoverflow.com/questions/17726753/get-a-random-number-between-0-0200-and-0-120-float-numbers
 };
 
-exports.toB2Vec2 = function(point) // Point to Box2D b2Vec2
-{
-	return new Box2D.Common.Math.b2Vec2(point.x, point.y);
-};
-
 return exports;
 });

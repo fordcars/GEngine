@@ -24,7 +24,7 @@
 
 (function() // No globals
 {
-var globalLibs = ["libs/box2d.min"]; // Libraries using the global namespace for their interface
+var globalLibs = ["Box2D"]; // Libraries using the global namespace for their interface
 var modules = ["Context", "Input", "SpriteConstructorManager", "SceneManager"]
 
 define(modules.concat(globalLibs), function(Context, Input, SpriteConstructorManager, SceneManager)
@@ -84,9 +84,13 @@ exports.Game = function(parameters)
 			
 			if(scene!=false && updateCallback!=false)
 			{
-				parameters.stepGame(scene);
+				if(scene.getType()==="physics")
+				{
+					scene.getWorld().Step(16, 10);
+				}
 				
-				// TODO: GIVE THIS (loop) TO THE DEVELOPER IN UPDATE + ability to give arguments to update()-- mGraphics.renderSprites(scene.getSprites());
+				scene.resetSpriteIndex();
+				parameters.stepGame(scene, mContext.getGraphics());
 			}
 			
 			window.requestAnimationFrame(game.update);

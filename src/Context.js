@@ -29,8 +29,6 @@ var exports = {};
 exports.Context = function(layerArray, width, height, parent, contextType)
 {
 	var context = {};
-	var canvas;
-	var layer;
 	
 	var mLayers = [];
 	var mCanvas = [];
@@ -38,6 +36,8 @@ exports.Context = function(layerArray, width, height, parent, contextType)
 	var mDefaultLayer;
 	var mWidth = width;
 	var mHeight = height;
+	
+	var mGraphics;
 	
 	var mContainer = document.createElement("div");
 	
@@ -54,6 +54,11 @@ exports.Context = function(layerArray, width, height, parent, contextType)
 	context.getDimensions = function()
 	{
 		return {width: mWidth, height: mHeight};
+	};
+	
+	context.getGraphics = function()
+	{
+		return mGraphics;
 	};
 	
 	context.getContainer = function()
@@ -85,10 +90,10 @@ exports.Context = function(layerArray, width, height, parent, contextType)
 	
 	for(var i=0, length=layerArray.length; i<length; i++)
 	{
-		canvas = new Canvas(width, height, i);
+		var canvas = new Canvas(width, height, i);
 		mCanvas.push(canvas);
 		
-		layer = new Layer.Layer(canvas, layerArray[i], contextType); // Adds the layer to the object
+		var layer = new Layer.Layer(canvas, layerArray[i]); // Adds the layer to the object
 		addTransformMethods(layer); // Overload 'native' transform methods
 		mLayers[i] = layer;
 		

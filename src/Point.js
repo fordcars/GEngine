@@ -22,65 +22,15 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //THE SOFTWARE.
 
-define(function()
+// This is a helper class
+
+define(["Box2dW"], function(Box2D)
 {
 var exports = {};
 
-exports.Point = function(x, y) // Doesn't have any getters/setters - access members directly
+exports.Point = function(x, y)
 {
-	var point = {};
-	
-	// Default values
-	point.x = typeof x !== "undefined" ? x : 0;
-	point.y = typeof y !== "undefined" ? y : 0;
-	
-	point.copy = function()
-	{
-		return new exports.Point(point.x, point.y);
-	};
-	
-	point.distanceSquared = function(otherPoint)
-	{
-		var dX = otherPoint.x - point.x;
-		var dY = otherPoint.y - point.y;
-		
-		return (dX * dX) + (dY * dY);
-	};
-	
-	point.distanceTo = function(otherPoint)
-	{
-		var dX = otherPoint.x - point.x;
-		var dY = otherPoint.y - point.y;
-		
-		return Math.sqrt((dX * dX) + (dY * dY));
-	};
-	
-	// Arithmetic
-	point.add = function(otherPoint)
-	{
-		point.x += otherPoint.x;
-		point.y += otherPoint.y;
-	};
-	
-	point.sub = function(otherPoint)
-	{
-		point.x -= otherPoint.x;
-		point.y -= otherPoint.y;
-	};
-	
-	point.mul = function(otherPoint)
-	{
-		point.x *= otherPoint.x;
-		point.y *= otherPoint.y;
-	};
-	
-	point.div = function(otherPoint)
-	{
-		point.x /= otherPoint.x;
-		point.y /= otherPoint.y;
-	};
-	
-	return point;
+	return new Box2D.b2Vec2(x, y);
 };
 
 return exports;

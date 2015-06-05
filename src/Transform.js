@@ -23,7 +23,7 @@
 
 // Remember that this does not account for any CSS transforms applied to the canvas
 
-define(function()
+define(["Point"], function(Point)
 {
 var exports = {};
 
@@ -120,7 +120,7 @@ Transform.prototype.transformPoint = function(px, py) {
   var y = py;
   px = x * this.m[0] + y * this.m[2] + this.m[4];
   py = x * this.m[1] + y * this.m[3] + this.m[5];
-  return [px, py];
+  return new Point.Point(px, py);
 };
 
 exports.Transform = Transform; // Add it the constructor to the interface

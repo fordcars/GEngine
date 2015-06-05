@@ -45,6 +45,11 @@ exports.SceneManager = function(spriteConstructorManager)// Keeps track of scene
 			scene = sceneManager.findScene(scene);
 		}
 		
+		if(mScene!=false)
+		{
+			mScene.resetSpriteIndex(); // Probably not important
+		}
+		
 		mScene = scene;
 	};
 	

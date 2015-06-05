@@ -47,28 +47,6 @@ exports.Graphics = function(width, height, defaultLayer) // Game context (contai
 			mLayer = layerToSet;
 		}
 	};
-	
-	graphics.renderSprites = function(sprites) // Render order 0 is the bottom-most sprite
-	{
-		var sprites = typeof sprites !== "undefined" ? sprites : 800;
-		
-		var renderOrderSprites;
-		var sprite;
-		
-		for(var i=0, length=sprites.length; i<length; i++)
-		{
-			renderOrderSprites = sprites[i];
-			
-			if(typeof renderOrderSprites!="undefined") // Check if it is NOT padding!!
-			{
-				for(var j=0, jLength=renderOrderSprites.length; j<jLength; j++)
-				{
-					sprite = renderOrderSprites[j];
-					sprite.render();
-				}
-			}
-		}
-	};
 
 	return graphics;
 };
