@@ -7,7 +7,6 @@ Audio (Audio API, probably)
 Better buttons. The ability to give it a variable where it would keep the button's state (for the buttons that have one)
 Time-based animations and movement, not frame-base!
 Long-shot: Optimize context style transformations with a system. (complex)
-NOTE: Stop ignoring jQuery, and get that corss-browser goodness!
 Only us mousedown and mouseup? Way more responsive!
 No direct access to members?
 Don't redraw when there is no movement
