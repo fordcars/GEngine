@@ -1,2 +1,2 @@
 # GEngine
-An educational Javascript game engine (still at work)
+An educational Javascript game engine (WIP).
